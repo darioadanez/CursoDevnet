@@ -1,10 +1,43 @@
 import sys
 import math
+ans = 0 #Variable global utilizada para guardar el resultado de la última operación
+def logaritmo ():
+    #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
+    s=""
+    global ans
+    while s != 'q':
+        print("\n¡Si desea realizar una operación con el resultado de la operación anterior introduzca 'ans'!")
+        #Solicita la introducción de los dos 
+        try:
+            n1 = input("Introduzca el número que desee obtener su logaritmo neperiano: ")
+        
+            if n1 == 'ans':
+                n1 = ans
+            #Convierte a punto flotante los números introducidos
+            
+            n1=float(n1)
+        except ValueError:
+            print("\n¡¡¡ATENCIÓN!!!\nUno de los datos introducidos no es un número.")
+            return
+        except:
+            print("Ha ocurrido un error")
+            
+        #Realiza la operación y muestra el resultado
+        try:
+
+            ans = math.log(n1)
+            print("\nEl número resultante es", "{:.2f}".format(ans))
+        except ValueError:
+            print("\n¡¡¡ANTENCIÓN!!! \nDebe introducir un número positivo.")
+        except:
+            print("\nHa ocurrido un error.")
+
+        s= input("\nSi desea salir introduzca 'q', de lo contrario, pulse cualquier botón: ")
 
 def potencia():
     #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
     s=""
-    ans = 0
+    global ans
     while s != 'q':
         print("\n¡Si desea realizar una operación con el resultado de la operación anterior introduzca 'ans'!")
         #Solicita la introducción de los dos 
@@ -21,7 +54,7 @@ def potencia():
             n1=float(n1)
             n2=float(n2)
         
-            #Realiza la suma y muestra el resultado
+            #Realiza la potencia y muestra el resultado
             ans = math.pow(n1,n2) 
             print("\nEl número resultante es", "{:.2f}".format(ans))
         except ValueError:
@@ -32,12 +65,12 @@ def potencia():
         s= input("\nSi desea salir introduzca 'q', de lo contrario, pulse cualquier botón: ")
 def raiz_cuadrada():
     s=""
-    ans = 0
+    global ans
     while s != 'q':
         print("\n¡Si desea realizar una operación con el resultado de la operación anterior introduzca 'ans'!")
         #Solicita la introducción de los dos 
         try:
-            n1 = input("Introduzca el número sobre el que quiere obtener la raíz cuadrada: ")
+            n1 = input("Introduzca el número real sobre el que quiere obtener la raíz cuadrada: ")
             
             
             if n1 == 'ans':
@@ -54,7 +87,7 @@ def raiz_cuadrada():
             print("Ha ocurrido un error")
             pass
         try:
-            #Realiza la suma y muestra el resultado
+            #Hace la raíz y muestra el resultado
             ans = math.sqrt(n1)
             print("\nLa raíz cuadrada de",n1,"es","{:.2f}".format(ans),"y","{:.2f}".format(-ans))
         except ValueError:
@@ -75,7 +108,7 @@ def raiz_cuadrada():
 def division():
      #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
     s=""
-    ans = 0
+    global ans
     while s != 'q':
         print("\n¡Si desea realizar una operación con el resultado de la operación anterior introduzca 'ans'!")
         #Solicita la introducción de los dos 
@@ -107,7 +140,7 @@ def multiplicacion():
 
      #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
     s=""
-    ans = 0
+    global ans
     while s != 'q':
         print("\n¡Si desea realizar una operación con el resultado de la operación anterior introduzca 'ans'!")
         #Solicita la introducción de los dos 
@@ -124,7 +157,7 @@ def multiplicacion():
             n1=float(n1)
             n2=float(n2)
         
-            #Realiza la suma y muestra el resultado
+            #Realiza la multiplicación y muestra el resultado
             ans = n1 * n2 
             print("\nEl producto de la multiplicación es", "{:.2f}".format(ans))
         except ValueError:
@@ -137,7 +170,7 @@ def multiplicacion():
 def resta():
     #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
     s=""
-    ans = 0
+    global ans
     while s != 'q':
         print("\n¡Si desea realizar una operación con el resultado de la operación anterior introduzca 'ans'!")
         #Solicita la introducción de los dos 
@@ -154,7 +187,7 @@ def resta():
             n1=float(n1)
             n2=float(n2)
         
-            #Realiza la suma y muestra el resultado
+            #Realiza la resta y muestra el resultado
             ans = n1 - n2 
             print("\nEl resultado de la resta es", ans)
         except ValueError:
@@ -168,7 +201,7 @@ def resta():
 def suma():
     #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
     s=""
-    ans = 0
+    global ans
     while s != 'q':
         print("\n¡Si desea realizar una operación con el resultado de la operación anterior introduzca 'ans'!")
         #Solicita la introducción de los dos 
@@ -195,9 +228,12 @@ def suma():
         s= input("\nSi desea salir introduzca 'q', de lo contrario, pulse cualquier botón: ")
 def default():
     print("\n!La opción que ha introducido no es válida!")
+def adios():
+    print("!Adiós! Ha sido un placer.")
 def main():
-
-    opcion = 0
+    
+    opcion = 0 # Inicializa la variable opción, que almacenará la opción elegida por el usuario
+    #Crea un diccionario para emular la estructura switch-case de otros lenguajes de programación
     dict= {
 
             1 : suma,
@@ -206,9 +242,10 @@ def main():
             4 : division,
             5 : raiz_cuadrada,
             6 : potencia,
-            #7 : logaritmo 
+            7 : logaritmo, 
+            8 : adios
         }
-    #Mientras la opción introducida no sea la de salir, sigue en el programa
+    #Mientras la opción introducida. Mientras no sea la de salir, sigue en el programa
     while opcion != 8:
         print("HAY QUE HACER GLOBAL LA VARIABLE ANS")
         print(
@@ -238,6 +275,8 @@ def main():
         dict.get(opcion,default)()
     
 if __name__ == "__main__":
+    
+    
     main()
 
 
