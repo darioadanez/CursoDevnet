@@ -3,6 +3,7 @@ import json
 from tabulate import *
 import urllib3
 import time
+from getch import getch
 
 class APIC_EM:
     def __init__(self):
@@ -33,11 +34,13 @@ class APIC_EM:
 
             response_json = resp.json()
             self.ticket = response_json["response"]["serviceTicket"]
-            self.timeOut = response_json["response"]["idleTimeout"]
+            #self.timeOut = response_json["response"]["idleTimeout"]
 
-            print("\nSe ha obtenido el ticket con éxito.")
+            print("\nSe ha obtenido el ticket con éxito.\nSu ticket es:", self.ticket)
         else:
             print("\nNo ha podido obtenerse el ticket.")
+        print("\nPulse cualquier tecla para continuar...")
+        getch()
 
     def print_hosts(self):
         api_url = "https://devnetsbx-netacad-apicem-3.cisco.com/api/v1/host"
@@ -51,7 +54,7 @@ class APIC_EM:
 
         #print("Status of host request", resp.status_code)
 
-        
+        response_json= resp.json()
         try:
             if resp.status_code != 200:
                 print("El codigo de estado no es 200, algo no ha ido como debía.",eval(resp.text)["response"]["detail"], sep="\n")
@@ -70,6 +73,9 @@ class APIC_EM:
             #return host_list
         except Exception as err:
             print("No ha sido posible obtener el listado de los host de la red.\n", err)
+
+        print("Pulse cualquier tecla para continuar...")
+        getch()
 
     def print_devices(self):
 
@@ -105,6 +111,9 @@ class APIC_EM:
             print(tabulate(device_list,table_header))
         except Exception as err:
             print("No ha sido posible obtener el listado de los host de la red.\n", err)
+
+        print("\nPulse cualquier tecla para continuar...")
+        getch()
 
     def get_interfaces(self):
         
@@ -144,6 +153,9 @@ class APIC_EM:
             print(tabulate(interface_list,table_header))
         except Exception as err:
             print ("No ha sido posible obtener las interfaces del dispositivo.")
+        
+        print("\nPulse cualquier tecla para continuar...")
+        getch()
 
     def get_flow(self):
         #URI del endpoint
@@ -225,6 +237,9 @@ class APIC_EM:
             print("El codigo de estado no es 200, algo no ha ido como debía.",eval(resp.text)["response"]["detail"], sep="\n")
             return
 
+        print("\nPulse cualquier tecla para continuar...")
+        getch()
+
     def muestra_vlan(self):
 
         print("\nEsta es la lista de dispositivos de la red: ")
@@ -273,6 +288,9 @@ class APIC_EM:
         table_header = ["VID", "IP","Nombre interfaz"]
         print(tabulate(vlan_list,table_header))
 
+        print("\nPulse cualquier tecla para continuar...")
+        getch()
+
     def localiza_IP(self):
 
         ip = input("Por favor, intriduzca la dirección IP que desea geolocalizar (q para salir): ").strip()
@@ -301,18 +319,61 @@ class APIC_EM:
         
         print()
         print(tabulate(localizacion,table_header))
+
+        print("\nPulse cualquier tecla para continuar...")
+        getch()
         
+def default():
+    print("\n!La opción que ha introducido no es válida!")
+def adios():
+    print("!Adiós! Ha sido un placer.")
+def main ():
+
+    apic_em = APIC_EM()
+    opcion = 0 # Inicializa la variable opción, que almacenará la opción elegida por el usuario
+    #Crea un diccionario para emular la estructura switch-case de otros lenguajes de programación
+    dict= {
+
+            1 : apic_em.get_ticket,
+            2 : apic_em.print_hosts,
+            3 : apic_em.print_devices,
+            4 : apic_em.get_interfaces,
+            5 : apic_em.muestra_vlan,
+            6 : apic_em.get_flow,
+            7 : apic_em.localiza_IP, 
+            8 : adios
+        }
+    #Mientras la opción introducida. Mientras no sea la de salir, sigue en el programa
+    while opcion != 8:
+        print(
+            """
+            +=============================================+
+            | ¡Bienvenido a la aplicación para interctuar |
+            | con el APIC-EM!                             |
+            | Seleccione la operación que desee realizar. |
+            +=============================================+
+            """)
+        print("""
+            +=============================================+
+            | 1.- Obtener ticket de acceso                |
+            | 2.- Ver host de la red                      |
+            | 3.- Ver dispositivos de la red              |
+            | 4.- Ver interfaces de un dispositivo        |
+            | 5.- Ver VLAN de un dispositivo              |
+            | 6.- Ver flujo entre dos host                |
+            | 7.- Ver geolocalización de una IP           |
+            | 8.- Salir de la aplicación                  |
+            +=============================================+
+            """)
+        try:
+            opcion = int(input("Opción: "))
+        except:
+            print("Debe introducir un número entero")
+        
+        dict.get(opcion,default)()
 
 if __name__ == "__main__":
-    apic_em = APIC_EM()
-    apic_em.get_ticket()
-    #Ver codigos de respuesta de cada petición para porer en los if el caso de que el ticket no sea válido
-    #apic_em.print_hosts()
-    #apic_em.print_devices()
-    #apic_em.get_interfaces()
-    #apic_em.get_flow()
-    #apic_em.muestra_vlan()
-    apic_em.localiza_IP()
-    #Añadir la de ver la geolocalización de una ip y si acaso la VLAN del los dispositivos
+    main()
+   
         
 

@@ -1,5 +1,6 @@
 import sys
 import math
+from getch import getch
 ans = 0 #Variable global utilizada para guardar el resultado de la última operación
 def logaritmo ():
     #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
@@ -247,7 +248,7 @@ def main():
         }
     #Mientras la opción introducida. Mientras no sea la de salir, sigue en el programa
     while opcion != 8:
-        print("HAY QUE HACER GLOBAL LA VARIABLE ANS")
+       
         print(
         """
         +=============================================+
