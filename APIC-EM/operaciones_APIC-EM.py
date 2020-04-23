@@ -54,9 +54,8 @@ class APIC_EM:
         
         try:
             if resp.status_code != 200:
-                raise Exception("El codigo de estado no es 200, algo no ha ido como debía." + resp.text) 
-
-            response_json = resp.json()
+                print("El codigo de estado no es 200, algo no ha ido como debía.",eval(resp.text)["response"]["detail"], sep="\n")
+                return
             host_list = []
             i = 0
             for item in response_json["response"]:
@@ -87,7 +86,8 @@ class APIC_EM:
         try:
 
             if resp.status_code != 200:
-                raise Exception("El codigo de estado no es 200, algo no ha ido como debía." + resp.text)
+                print("El codigo de estado no es 200, algo no ha ido como debía.",eval(resp.text)["response"]["detail"], sep="\n")
+                return
                 
             response_json = resp.json()
 
@@ -110,7 +110,7 @@ class APIC_EM:
         
         print("\nEsta es la lista de dispositivos de la red: ")
         self.print_devices()
-        id = input("\nPor favor, introduzca el identificador del dispositivo que desee conocer sus interfaces (q para salir): ")
+        id = input("\nPor favor, introduzca el identificador del dispositivo que desee conocer sus interfaces (q para salir): ").strip()
         if id == 'q':
             return
 
@@ -126,7 +126,8 @@ class APIC_EM:
         try:
 
             if resp.status_code != 200:
-                raise Exception("El codigo de estado no es 200, algo no ha ido como debía." + resp.text)
+                print("El codigo de estado no es 200, algo no ha ido como debía.",eval(resp.text)["response"]["detail"], sep="\n")
+                return
                 
             response_json = resp.json()
 
@@ -158,8 +159,10 @@ class APIC_EM:
         self.print_hosts()
 
 
-        s_ip = input("Introduzca la dirección IP de origen: ")
-        d_ip = input("Introduzca la dirección IP de destino: ")
+        s_ip = input("Introduzca la dirección IP de origen (q para salir): ").strip()
+        d_ip = input("Introduzca la dirección IP de destino (q para salir): ").strip()
+        if s_ip == 'q' or d_ip == 'q':
+            return
         headers = {
             "Content-type": "application/json",
             "X-Auth-Token": self.ticket
@@ -219,7 +222,86 @@ class APIC_EM:
                     #Espera dos segundos para no mandar peticiones constantemente
                 time.sleep(2)
         else: 
-            print("\nEl formato proporcionado de las direcciones IP no es válido")
+            print("El codigo de estado no es 200, algo no ha ido como debía.",eval(resp.text)["response"]["detail"], sep="\n")
+            return
+
+    def muestra_vlan(self):
+
+        print("\nEsta es la lista de dispositivos de la red: ")
+        self.print_devices()
+
+        id = input("\nPor favor, introduzca el identificador del dispositivo del que desee obtener sus redes (q para salir): ").strip()
+        if id == 'q':
+            return
+
+        api_url = "https://devnetsbx-netacad-apicem-3.cisco.com/api/v1/network-device" + "/" + id + "/vlan"
+        #print("Status of host request", resp.status_code)
+        headers = {
+            "Content_type": "application/json",
+            "X-Auth-Token": self.ticket
+        }
+
+        resp = requests.get(api_url,headers = headers, verify = False)
+        #print("Status of host request", resp.status_code)
+        
+        if resp.status_code != 200:
+           print("El codigo de estado no es 200, algo no ha ido como debía.",eval(resp.text)["response"]["detail"], sep="\n")
+           return
+            
+        response_json = resp.json()
+        
+
+
+        vlan_list = []
+        i = 0
+        for item in response_json["response"]:
+            
+            vlan= []
+            try:
+                vlan.append(item["vlanNumber"])
+            except:
+                vlan.append("Desconocido")
+            try:
+                vlan.append(item["ipAddress"])
+            except:
+                vlan.append("Desconocida")
+            try:
+                vlan.append(item["interfaceName"])
+            except:
+                vlan.append("Desconocido")
+            vlan_list.append(vlan)
+        table_header = ["VID", "IP","Nombre interfaz"]
+        print(tabulate(vlan_list,table_header))
+
+    def localiza_IP(self):
+
+        ip = input("Por favor, intriduzca la dirección IP que desea geolocalizar (q para salir): ").strip()
+
+        if ip == 'q':
+            return
+        api_url = "https://devnetsbx-netacad-apicem-3.cisco.com/api/v1/ipgeo/" + ip
+
+        headers = {
+            "Content_type": "application/json",
+            "X-Auth-Token": self.ticket
+        }
+
+        resp = requests.get(api_url,headers = headers, verify = False)
+        if resp.status_code != 200:
+           print("La petición no ha podido ser llevada a cabo",eval(resp.text)["response"]["detail"], sep="\n")
+           return
+            
+        response_json = resp.json()
+       
+        item = response_json["response"][ip]
+            
+        localizacion = [[item["city"], item["subDivision"], item["country"], item["continent"], item["latitude"], item["longitude"]], ]
+
+        table_header = ["Ciudad", "Subdivisión", "País", "Continente", "Latitud", "Longitud"]
+        
+        print()
+        print(tabulate(localizacion,table_header))
+        
 
 if __name__ == "__main__":
     apic_em = APIC_EM()
@@ -228,7 +310,9 @@ if __name__ == "__main__":
     #apic_em.print_hosts()
     #apic_em.print_devices()
     #apic_em.get_interfaces()
-    apic_em.get_flow()
+    #apic_em.get_flow()
+    #apic_em.muestra_vlan()
+    apic_em.localiza_IP()
     #Añadir la de ver la geolocalización de una ip y si acaso la VLAN del los dispositivos
         
 
