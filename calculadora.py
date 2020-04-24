@@ -1,7 +1,11 @@
 import sys
 import math
-from getch import getch
+#from getch import getch
 ans = 0 #Variable global utilizada para guardar el resultado de la última operación
+
+#####################################################################
+#Función que calcula pide un número y calcula su logaritmo neperiano#
+#####################################################################
 def logaritmo ():
     #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
     s=""
@@ -14,8 +18,8 @@ def logaritmo ():
         
             if n1 == 'ans':
                 n1 = ans
-            #Convierte a punto flotante los números introducidos
-            
+
+            #Convierte a punto flotante el número introducido
             n1=float(n1)
         except ValueError:
             print("\n¡¡¡ATENCIÓN!!!\nUno de los datos introducidos no es un número.")
@@ -33,15 +37,19 @@ def logaritmo ():
         except:
             print("\nHa ocurrido un error.")
 
+        #Mensaje para continuar o no en la función
         s= input("\nSi desea salir introduzca 'q', de lo contrario, pulse cualquier botón: ")
 
+####################################################################################
+#Función que pide la base y el exponente de un número y lo muestra de forma decimal#
+####################################################################################
 def potencia():
     #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
     s=""
     global ans
     while s != 'q':
         print("\n¡Si desea realizar una operación con el resultado de la operación anterior introduzca 'ans'!")
-        #Solicita la introducción de los dos 
+        #Solicita la introducción de los dos números
         try:
             n1 = input("Introduzca la base: ")
             n2 = input("Introduzca el exponente: ")
@@ -50,8 +58,8 @@ def potencia():
                 n1 = ans
             if n2 == 'ans':
                 n2 = ans
-            #Convierte a punto flotante los números introducidos
-            
+
+            #Convierte a punto flotante los números introducido
             n1=float(n1)
             n2=float(n2)
         
@@ -63,8 +71,14 @@ def potencia():
         except:
             print("Ha ocurrido un error")
 
+        #Mensaje para continuar o no en la función
         s= input("\nSi desea salir introduzca 'q', de lo contrario, pulse cualquier botón: ")
+
+###########################################################
+#Función que solicita un número y muestra su raíz cuadrada#
+###########################################################
 def raiz_cuadrada():
+    #Define e inicializa las variables utilizadas para salir del bucle y guardar el resultado
     s=""
     global ans
     while s != 'q':
@@ -76,8 +90,8 @@ def raiz_cuadrada():
             
             if n1 == 'ans':
                 n1 = ans
+
             #Convierte a punto flotante el número introducido
-            
             n1=float(n1)
         
             
@@ -104,15 +118,19 @@ def raiz_cuadrada():
         except:
             print("Ha ocurrido un error")
 
+        #Mensaje para continuar o no en la función
         s= input("\nSi desea salir introduzca 'q', de lo contrario, pulse cualquier botón: ")
 
+####################################################
+#Función que pide dos números y realiza la división#
+####################################################
 def division():
      #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
     s=""
     global ans
     while s != 'q':
         print("\n¡Si desea realizar una operación con el resultado de la operación anterior introduzca 'ans'!")
-        #Solicita la introducción de los dos 
+        #Solicita la introducción de los dos números
         try:
             n1 = input("Introduzca el dividendo: ")
             n2 = input("Introduzca el divisor: ")
@@ -121,8 +139,8 @@ def division():
                 n1 = ans
             if n2 == 'ans':
                 n2 = ans
+
             #Convierte a punto flotante los números introducidos
-            
             n1=float(n1)
             n2=float(n2)
         
@@ -135,8 +153,13 @@ def division():
             print("¡No se puede dividir un número por 0!")
         except:
             print("Ha ocurrido un error")
-            
+
+        #Mensaje para continuar o no en la función    
         s= input("\nSi desea salir introduzca 'q', de lo contrario, pulse cualquier botón: ")
+
+##############################################################
+#Función que solicita dos números y muestra su multiplicación#
+##############################################################
 def multiplicacion():
 
      #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
@@ -144,7 +167,7 @@ def multiplicacion():
     global ans
     while s != 'q':
         print("\n¡Si desea realizar una operación con el resultado de la operación anterior introduzca 'ans'!")
-        #Solicita la introducción de los dos 
+        #Solicita la introducción de los dos números
         try:
             n1 = input("Introduzca el multiplicando: ")
             n2 = input("Introduzca el multiplicador: ")
@@ -153,8 +176,8 @@ def multiplicacion():
                 n1 = ans
             if n2 == 'ans':
                 n2 = ans
+
             #Convierte a punto flotante los números introducidos
-            
             n1=float(n1)
             n2=float(n2)
         
@@ -166,8 +189,12 @@ def multiplicacion():
         except:
             print("Ha ocurrido un error")
 
+        #Mensaje para continuar o no en la función
         s= input("\nSi desea salir introduzca 'q', de lo contrario, pulse cualquier botón: ")
 
+#####################################################
+#Función que solicita dos números y muestra la resta#
+#####################################################
 def resta():
     #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
     s=""
@@ -197,8 +224,9 @@ def resta():
             print("Ha ocurrido un error")   
         s= input("\nSi desea salir introduzca 'q', de lo contrario, pulse cualquier botón: ")
 
-
-
+####################################################
+#Función que solicita dos números y muestra su suma#
+####################################################
 def suma():
     #Define e inicializa las variables que va a usar para guardar el resultado y salir del bucle while
     s=""
@@ -227,10 +255,24 @@ def suma():
         except:
             print("Ha ocurrido un error")
         s= input("\nSi desea salir introduzca 'q', de lo contrario, pulse cualquier botón: ")
+
+################################################################################################
+#Función que es invocada si la opción introducida no coincide con ninguna clave del diccionario#
+################################################################################################
 def default():
     print("\n!La opción que ha introducido no es válida!")
+
+
+###############################################################################################
+#Función que muestra un mensaje de despedida y que recoge la opción de salir de la calculadora#
+###############################################################################################
 def adios():
     print("!Adiós! Ha sido un placer.")
+
+
+##############
+#Función main#
+##############
 def main():
     
     opcion = 0 # Inicializa la variable opción, que almacenará la opción elegida por el usuario
@@ -271,8 +313,9 @@ def main():
         try:
             opcion = int(input("Opción: "))
         except:
-            print("Debe introducir un número entero")
-        
+            print("Debe introducir un número entero.")
+
+        #Invoca la función que corresponda con la opción introducida
         dict.get(opcion,default)()
     
 if __name__ == "__main__":
